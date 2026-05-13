@@ -72,12 +72,27 @@ Buka profile GitHub kamu — contribution graph langsung hijau dari Januari 2025
 
 ---
 
-## 🔄 Update Harian (Otomatis)
+## 🔄 Setup GitHub Actions (Auto Commit Harian)
 
-File `.github/workflows/auto-commit.yml` sudah disertakan. Workflow ini berjalan otomatis **6x sehari** tanpa perlu melakukan apapun.
+Agar commit berjalan otomatis setiap hari tanpa perlu melakukan apapun:
 
-Pastikan GitHub Actions aktif di repo kamu:
+### 1. Aktifkan Write Permission
+
+> ⚠️ Langkah ini wajib, tanpa ini Actions tidak bisa push commit.
+
+1. Buka repo di GitHub
+2. **Settings** → **Actions** → **General**
+3. Scroll ke **Workflow permissions**
+4. Pilih **Read and write permissions** ✅
+5. Klik **Save**
+
+### 2. Pastikan Actions aktif
+
 > Settings → Actions → General → Allow all actions ✅
+
+### 3. Cek di tab Actions
+
+Buka tab **Actions** di repo — workflow `Auto Commit Daily` akan jalan otomatis **6x sehari** sesuai jadwal. Tidak perlu melakukan apapun lagi.
 
 ---
 
@@ -125,6 +140,9 @@ Edit bagian ini di `backfill.sh` sesuai kebutuhan:
 - Pastikan repo **Public**
 - Pastikan email git sama dengan email GitHub
 - Tunggu ~15 menit setelah push, GitHub butuh waktu update
+
+**Error `Permission denied 403` di Actions?**
+- Settings → Actions → General → Workflow permissions → **Read and write permissions** ✅
 
 **Error `integer expression expected`?**
 ```bash

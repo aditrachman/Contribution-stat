@@ -118,7 +118,7 @@ rm -f /tmp/dates.txt
 echo ""
 echo ""
 echo "========================================="
-echo "✅ SELESAI!"
+echo "✅ done rek!"
 echo "📊 Total commit : $count"
 echo "📅 Periode      : 2025-01-01 s/d $(date '+%Y-%m-%d')"
 echo "========================================="
