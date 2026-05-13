@@ -1,0 +1,56 @@
+name: Auto Commit Daily
+
+on:
+  push:
+    branches:
+      - main
+
+  schedule:
+    # Setiap hari: jam 07, 09, 12, 15, 18, 20 WIB (UTC+7)
+    # Berarti UTC: 00, 02, 05, 08, 11, 13
+    - cron: "0 0,2,5,8,11,13 * * *"
+
+  workflow_dispatch: # Bisa trigger manual dari GitHub
+
+jobs:
+  auto_commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Update timestamp file
+        run: |
+          d=$(date '+%Y-%m-%dT%H:%M:%SZ')
+          echo "$d" > LAST_UPDATED
+          echo "Updated: $d" >> activity.log
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "aditrachman23@gmail.com"
+          git config --local user.name "aditrachman"
+          git add -A
+
+          arr[0]="chore(bot): 😂 auto commit"
+          arr[1]="chore(bot): 😱 auto commit"
+          arr[2]="chore(bot): 👿 auto commit"
+          arr[3]="chore(bot): 💩 auto commit"
+          arr[4]="chore(bot): 🙏 auto commit"
+          arr[5]="chore(bot): 🙈 auto commit"
+          arr[6]="chore(bot): 🐐 auto commit"
+          arr[7]="chore(bot): 🤖 auto commit"
+          arr[8]="chore(bot): 🟩 auto commit"
+          arr[9]="chore(bot): 👻 auto commit"
+
+          rand=$[$RANDOM % ${#arr[@]}]
+          git commit -m "${arr[$rand]}" || echo "Nothing to commit"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          directory: "."
+          github_token: ${{ secrets.GITHUB_TOKEN }}
