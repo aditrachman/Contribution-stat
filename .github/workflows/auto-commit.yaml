@@ -6,11 +6,9 @@ on:
       - main
 
   schedule:
-    # Setiap hari: jam 07, 09, 12, 15, 18, 20 WIB (UTC+7)
-    # Berarti UTC: 00, 02, 05, 08, 11, 13
     - cron: "0 0,2,5,8,11,13 * * *"
 
-  workflow_dispatch: # Bisa trigger manual dari GitHub
+  workflow_dispatch:
 
 jobs:
   auto_commit:
@@ -20,14 +18,13 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          persist-credentials: false
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       - name: Update timestamp file
         run: |
           d=$(date '+%Y-%m-%dT%H:%M:%SZ')
           echo "$d" > LAST_UPDATED
-          echo "Updated: $d" >> activity.log
 
       - name: Commit changes
         run: |
@@ -47,10 +44,7 @@ jobs:
           arr[9]="chore(bot): 👻 auto commit"
 
           rand=$[$RANDOM % ${#arr[@]}]
-          git commit -m "${arr[$rand]}" || echo "Nothing to commit"
+          git diff --cached --quiet || git commit -m "${arr[$rand]}"
 
       - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          directory: "."
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        run: git push origin main
